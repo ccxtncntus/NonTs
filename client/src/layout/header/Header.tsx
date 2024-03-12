@@ -1,6 +1,7 @@
 import { useState } from "react";
 import "./header.css";
 import { NavLink } from "react-router-dom";
+import logoVip from "../../assets/logovipnhat.png";
 const Header = () => {
   const [ShowMenuUser, setShowMenuUser] = useState<boolean>(false);
   const [ProDuctsMenu, setProDuctsMenu] = useState<boolean>(false);
@@ -10,10 +11,7 @@ const Header = () => {
   return (
     <div className={"header sticky container"}>
       <div className="header_logo hover">
-        <img
-          src="https://i.pinimg.com/564x/6e/6f/7e/6e6f7ed284a21a77bc1f59bf739ead91.jpg"
-          alt=""
-        />
+        <img src={logoVip} alt="" />
       </div>
       <div className="header_menu">
         <ul>
