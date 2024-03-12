@@ -1,0 +1,53 @@
+.downloadCV {
+  /* background-image: url("https://i.pinimg.com/originals/44/08/4e/44084e9584b386bc9e1aae42356f050e.jpg"); */
+  background-attachment: fixed;
+}
+
+.downloadCV_vip {
+  padding: 40px 40px;
+  background-color: rgba(94, 94, 94, 0.8);
+}
+.themecv {
+  background-color: white;
+  padding: 28px;
+}
+.themecv_information_img img {
+  width: 220px;
+  height: 220px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+.cvBlock {
+  display: block;
+}
+.cvNonMP {
+  padding: 0;
+  margin: 0;
+}
+.themecv_summary {
+  margin-top: 40px;
+}
+.bottomCV {
+  border-bottom: 2px solid black;
+  padding-bottom: 8px;
+  text-transform: uppercase;
+}
+.mTopCV {
+  margin-top: 40px;
+}
+
+.editHoverOff {
+  transition: all 0.3s;
+  opacity: 0;
+  visibility: hidden;
+}
+.editHoverOn:hover .editHoverOff {
+  transition: all 0.3s;
+  opacity: 100;
+  visibility: visible;
+}
+
+@page {
+  size: A4;
+  margin: 10px;
+}

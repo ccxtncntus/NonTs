@@ -1,0 +1,295 @@
+.cv {
+  min-height: 100vh;
+  background-image: url("../../assets//bging.jpg");
+  background-attachment: fixed;
+  background-position: top;
+  background-repeat: no-repeat;
+  background-size: cover;
+  color: rgb(232, 232, 232);
+  position: relative;
+}
+
+.cv_bg {
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  object-fit: cover;
+  opacity: 0.3;
+}
+.vip {
+  z-index: 100;
+  position: relative;
+}
+.cv_nav {
+  height: 10vh;
+  background-color: rgba(41, 34, 64, 0.5);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.cv_footer {
+  height: 10vh;
+  background-color: rgba(41, 34, 64, 0.5);
+  display: grid;
+  place-items: center;
+}
+.cv_nav_vip {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+.cv_nav_menu ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+.cv_nav_menu ul li {
+  display: inline-block;
+  margin: 20px;
+}
+.cv_nav_menu ul li a {
+  font-size: 1.1rem;
+  text-decoration: none;
+  color: aliceblue;
+  display: block;
+}
+.cv_nav_menu ul li a.active {
+  color: aliceblue; /* Màu chữ khi hover */
+  text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 20px #00e6e6, 0 0 40px #00e6e6,
+    0 0 80px #00e6e6, 0 0 90px #00e6e6, 0 0 100px #00e6e6, 0 0 150px #00e6e6;
+  transition: all 0.3s;
+}
+.cv_nav_menu ul li:hover a {
+  color: aliceblue; /* Màu chữ khi hover */
+  text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 20px #00e6e6, 0 0 40px #00e6e6,
+    0 0 80px #00e6e6, 0 0 90px #00e6e6, 0 0 100px #00e6e6, 0 0 150px #00e6e6;
+  transition: all 0.3s;
+}
+.cv_nav_logo a {
+  font-size: 1.3rem;
+  text-decoration: none;
+  color: aliceblue;
+  display: block;
+}
+.cv_nav_logo a:hover {
+  color: aliceblue; /* Màu chữ khi hover */
+  text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 20px #00e6e6, 0 0 40px #00e6e6,
+    0 0 80px #00e6e6, 0 0 90px #00e6e6, 0 0 100px #00e6e6, 0 0 150px #00e6e6;
+  transition: all 0.3s;
+}
+.puple {
+  color: var(--puple) !important;
+}
+.cv_banner {
+  height: 90vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.cv_banner_animation {
+  display: inline-block;
+  animation-name: wave-animation;
+  animation-duration: 2.1s;
+  animation-iteration-count: infinite;
+  transform-origin: 70% 70%;
+  display: inline-block;
+}
+
+@keyframes wave-animation {
+  0% {
+    transform: rotate(0deg);
+  }
+  10% {
+    transform: rotate(14deg);
+  } /* The following five values can be played with to make the waving more or less extreme */
+  20% {
+    transform: rotate(-8deg);
+  }
+  30% {
+    transform: rotate(14deg);
+  }
+  40% {
+    transform: rotate(-4deg);
+  }
+  50% {
+    transform: rotate(10deg);
+  }
+  60% {
+    transform: rotate(0deg);
+  } /* Reset for the last half to pause */
+  100% {
+    transform: rotate(0deg);
+  }
+}
+.cv_banner_titte_job {
+  font-size: 3.5rem;
+}
+.cv_banner_img img {
+  width: 100%;
+}
+.cv_banner_titte {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+/* ---------------- */
+
+.cv_resume {
+  min-height: 90vh;
+  padding: 40px 0;
+}
+.cv_resume_child {
+  width: 100%;
+  background-color: rgba(41, 34, 64, 0.6);
+  padding: 20px 28px;
+  border-left: 3px solid var(--puple);
+  border-bottom: 0.5px solid gray;
+}
+.cv_resume_child_textShadow {
+  color: rgba(255, 255, 255, 0.7);
+}
+.cv_resume_child header {
+  font-size: 1.1rem;
+}
+.cv_resume_child_i {
+  position: relative;
+}
+.cv_resume_child_icon {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  left: -28px;
+  color: var(--puple);
+}
+/* ------------------------ */
+.cv_about {
+  /* padding: 40px 0; */
+}
+.about_info {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  min-height: 90vh;
+}
+.cv_about_img img {
+  width: 100%;
+}
+.cv_about_information_menu {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+.cv_about_information_menu li {
+  font-size: 1.1rem;
+}
+
+.tech-icons {
+  font-size: 4rem !important;
+  margin: 15px !important;
+  padding: 10px !important;
+  opacity: 0.93 !important;
+  border: 1.7px solid rgba(200, 137, 230, 0.637) !important;
+  vertical-align: middle !important;
+  text-align: center !important;
+  border-radius: 5px !important;
+  display: table !important;
+  box-shadow: 4px 5px 4px 3px rgba(89, 4, 168, 0.137) !important;
+  overflow: hidden !important;
+  transition: all 0.4s ease 0s !important;
+}
+
+@media (max-width: 767px) {
+  .tech-icons {
+    margin: 10px !important;
+  }
+}
+
+.tech-icons:hover {
+  cursor: pointer;
+  transform: scale(1.05) !important;
+  overflow: hidden !important;
+  border: 2.2px solid rgba(197, 115, 230, 0.883) !important;
+}
+/* ------------- */
+.cv_project {
+  min-height: 90vh;
+  padding: 40px;
+}
+.cv_project_dad {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+}
+.cv_project_card {
+  border-radius: 8px;
+  border: 1px solid var(--puple);
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 440px;
+}
+
+.cv_project_card img {
+  width: 100%;
+  height: 200px;
+  border-radius: 6px;
+  object-fit: cover;
+}
+.cv_project_card_btns a {
+  color: white;
+  font-size: 1.1rem;
+}
+.cv_project_card_title {
+  text-align: center;
+  font-size: 1.2rem;
+  color: var(--puple);
+}
+.cv_project_card_btns {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+}
+.cv_contact {
+  min-height: 90vh;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  overflow: hidden;
+}
+.cv_contact input,
+.cv_contact textarea {
+  background-color: rgba(255, 255, 255, 0.8);
+}
+.btn-puple {
+  background-color: var(--puple) !important;
+  color: white !important;
+  width: 120px;
+  border: 1px solid var(--puple) !important;
+}
+.btn-puple:hover {
+  transition: all 0.3s;
+  box-shadow: 0 0 10px var(--puple);
+}
+/* ---- */
+.cv_loading {
+  height: 100vh;
+  display: grid;
+  place-items: center;
+  background-image: url("../../assets//bging.jpg");
+  background-attachment: fixed;
+  background-position: top;
+  background-repeat: no-repeat;
+  background-size: cover;
+  color: rgb(232, 232, 232);
+  position: relative;
+}
+/* download */
