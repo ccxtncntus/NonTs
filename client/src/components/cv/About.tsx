@@ -30,7 +30,7 @@ const About = () => {
             Chào mọi người, Tôi là <span className="puple">Name space </span>
             đến từ <span className="puple"> Nam dong - Đăk Nông</span>
             <br />
-            Hiện tại tôi đang là sinh viên của cao đẳng FPT
+            Hiện tại tôi là sinh viên của cao đẳng FPT
             <br />
             <br />
             Ngoài việc code, một số hoạt động khác mà tôi thích làm!
