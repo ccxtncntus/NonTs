@@ -1,20 +1,12 @@
-import express from "express";
-import multer from "multer";
-import * as UsersController from "../controllers/UsersController.js";
+import express from 'express';
+import * as UsersController from '../controllers/UsersController.js';
+import authenToken from '../middleware/authenToken.js';
+import isAdmin from '../middleware/isAdmin.js';
 const router = express();
-
 router.use(express.json());
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    // cb(null, path.join("../public/images"));
-    cb(null, "public/images");
-  },
-  filename: function (req, file, cb) {
-    const name = Date.now() + "-" + file.originalname;
-    cb(null, name);
-  },
-});
-const upload = multer({ storage: storage });
+// isAdmin;
+router.get('/getUsers', authenToken, UsersController.getUsers);
+router.post('/register', UsersController.register);
+router.post('/login', UsersController.login);
 
-router.post("/register", upload.single("image"), UsersController.register);
 export default router;

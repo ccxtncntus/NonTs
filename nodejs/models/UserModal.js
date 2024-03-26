@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 const { Schema, model } = mongoose;
 
 const userSchema = new Schema({
@@ -14,10 +14,15 @@ const userSchema = new Schema({
     type: String,
     required: true,
   },
-  image: {
+  curentToken: {
     type: String,
-    required: true,
+  },
+  role: {
+    type: String,
+  },
+  createAt: {
+    type: Date,
+    default: Date.now,
   },
 });
-
-export default model("UsersNon", userSchema);
+export default model('user', userSchema);

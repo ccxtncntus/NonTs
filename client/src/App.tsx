@@ -1,21 +1,25 @@
-import { Route, Routes } from "react-router-dom";
-import { lazy, Suspense } from "react";
-import Home from "./pages/home/Home";
-import Products from "./pages/products/Products";
-import HomeContent from "./pages/homecontent/HomeContent";
-import Contact from "./pages/contact/Contact";
-import Blog from "./pages/blog/Blog";
-import Non from "./pages/non/Non";
+import { Route, Routes } from 'react-router-dom';
+import { lazy, Suspense } from 'react';
+import Home from './pages/home/Home';
+import Products from './pages/products/Products';
+import HomeContent from './pages/homecontent/HomeContent';
+import Contact from './pages/contact/Contact';
+import Blog from './pages/blog/Blog';
+import Non from './pages/non/Non';
 
-import Cv from "./pages/cv/Cv";
-const AboutCV = lazy(() => import("./components/cv/About"));
-const ProjectsCV = lazy(() => import("./components/cv/Projects"));
-const ContactCV = lazy(() => import("./components/cv/Contact"));
-const ResumeCV = lazy(() => import("./components/cv/Resume"));
-const BannerCV = lazy(() => import("./components/cv/Banner"));
-const DownLoadCV = lazy(() => import("./components/cv/download/DownLoad"));
-import Loading from "./components/cv/Loading";
-import Tv from "./pages/tv/Tv";
+import Cv from './pages/cv/Cv';
+const AboutCV = lazy(() => import('./components/cv/About'));
+const ProjectsCV = lazy(() => import('./components/cv/Projects'));
+const ContactCV = lazy(() => import('./components/cv/Contact'));
+const ResumeCV = lazy(() => import('./components/cv/Resume'));
+const BannerCV = lazy(() => import('./components/cv/Banner'));
+const DownLoadCV = lazy(() => import('./components/cv/download/DownLoad'));
+
+import Loading from './components/cv/Loading';
+
+import Tv from './pages/tv/Tv';
+const LoginLazy = lazy(() => import('./pages/login/Login'));
+
 function App() {
   return (
     <>
@@ -94,7 +98,16 @@ function App() {
           }
         />
         <Route path="/non" element={<Non />} />
+        <Route path="/non/:id" element={<Non />} />
         <Route path="/tv" element={<Tv />} />
+        <Route
+          path="/login"
+          element={
+            <Suspense fallback={'loading...'}>
+              <LoginLazy />
+            </Suspense>
+          }
+        />
       </Routes>
     </>
   );

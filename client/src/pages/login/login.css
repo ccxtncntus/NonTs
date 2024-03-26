@@ -1,0 +1,45 @@
+.login {
+  position: relative;
+  height: 100vh;
+  background: url('../../assets/bglogin.jpg');
+  background-size: cover;
+  background-position: center;
+}
+.login_form {
+  max-width: 500px;
+  padding: 20px 40px;
+  background-color: rgba(177, 176, 176, 0.8);
+  border-radius: 12px;
+}
+.login_form_title_logo {
+  font-size: 1.6rem;
+  font-weight: 500;
+}
+
+.login_form_title {
+  color: var(--vip);
+}
+.login_mark {
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.6);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.login_btn {
+  padding: 10px 60px;
+  border-radius: 50px;
+  background-color: var(--vip);
+  border: none;
+  color: white;
+  border: 0.5px solid var(--vip);
+}
+.login_btn:hover {
+  background-color: white;
+  color: var(--vip);
+  transition: all 0.3s;
+  border: 0.5px solid var(--vip);
+  box-shadow: 0 0 10px var(--vip);
+}

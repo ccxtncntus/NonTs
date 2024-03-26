@@ -61,7 +61,7 @@
   position: absolute;
   bottom: -2px;
   left: 0;
-  content: "";
+  content: '';
   height: 2px;
   width: 0;
   background-color: var(--vip);
@@ -71,7 +71,7 @@
   position: absolute;
   bottom: -2px;
   left: 0;
-  content: "";
+  content: '';
   height: 2px;
   width: 100%;
   background-color: var(--vip);
@@ -130,7 +130,11 @@
   margin: 0;
   padding: 8px 20px;
 }
-.header_icon_menu li:hover {
+.header_icon_menu li a {
+  text-decoration: none;
+  color: var(--text);
+}
+.header_icon_menu li:hover a {
   color: var(--vip);
   transition: all 0.3s;
 }
