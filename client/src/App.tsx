@@ -5,7 +5,8 @@ import Products from './pages/products/Products';
 import HomeContent from './pages/homecontent/HomeContent';
 import Contact from './pages/contact/Contact';
 import Blog from './pages/blog/Blog';
-import Non from './pages/non/Non';
+// import Non from './pages/non/Non';
+const NonLazy = lazy(() => import('./pages/non/Non'));
 
 import Cv from './pages/cv/Cv';
 const AboutCV = lazy(() => import('./components/cv/About'));
@@ -26,6 +27,22 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />}>
           <Route path="/" element={<HomeContent />} />
+          <Route
+            path="/call"
+            element={
+              <Suspense fallback={'Loading...'}>
+                <NonLazy />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/call/:id"
+            element={
+              <Suspense fallback={'Loading...'}>
+                <NonLazy />
+              </Suspense>
+            }
+          />
           <Route path="/products" element={<Products />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/blogs" element={<Blog />} />
@@ -97,8 +114,8 @@ function App() {
             </Suspense>
           }
         />
-        <Route path="/non" element={<Non />} />
-        <Route path="/non/:id" element={<Non />} />
+        {/* <Route path="/non" element={<Non />} /> */}
+        {/* <Route path="/non/:id" element={<Non />} /> */}
         <Route path="/tv" element={<Tv />} />
         <Route
           path="/login"

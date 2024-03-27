@@ -4,10 +4,14 @@
   justify-content: space-between;
   align-items: center;
 }
-.header.sticky {
+.header_ad {
+  background-color: aliceblue;
+}
+.header_ad.sticky {
   position: sticky;
   top: 0;
   transition: all 0.3s;
+  z-index: 150;
 }
 .hover:hover {
   cursor: pointer;
@@ -15,8 +19,8 @@
 
 /* logo */
 .header .header_logo img {
-  width: 80px;
-  height: 80px;
+  width: 72px;
+  height: 72px;
   border-radius: 50%;
   object-fit: cover;
 }
@@ -53,7 +57,7 @@
 }
 .header .header_menu ul li {
   display: inline-block;
-  margin: 20px;
+  margin: 12px;
   padding: 10px;
   position: relative;
 }
@@ -125,6 +129,7 @@
   border-radius: 8px;
   box-shadow: 0 0 10px gray;
   opacity: 100;
+  background-color: rgba(255, 255, 255, 0.8);
 }
 .header_icon_menu li {
   margin: 0;

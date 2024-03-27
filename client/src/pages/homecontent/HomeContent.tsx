@@ -1,5 +1,11 @@
+import Banner from '../../layout/banner/Banner';
 const HomeContent = () => {
-  return <div>HomeContent</div>;
+  return (
+    <>
+      <Banner />
+      more
+    </>
+  );
 };
 
 export default HomeContent;
