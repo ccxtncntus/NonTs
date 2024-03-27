@@ -28,7 +28,6 @@ const users = {};
 io.on('connection', (socket) => {
   socket.on('join-room', ({ roomId, userId }) => {
     socket.join(roomId);
-
     if (users[roomId]) {
       const length = users[roomId].length;
       if (length == 2) {
@@ -43,7 +42,7 @@ io.on('connection', (socket) => {
     } else {
       users[roomId] = [userId];
     }
-    // console.log(users);
+    console.log(users);
     socket.on('calluser', ({ slug }) => {
       const result = Object.keys(users).map((key) => [key, users[key]]);
       const newMap = result
@@ -74,6 +73,11 @@ io.on('connection', (socket) => {
     //     console.log(room);
     //     users[roomID] = room;
     //   }
+  });
+  socket.on('uu', () => {
+    // users[roomId] = users[roomId].filter((id) => id !== idpeer);
+    // console.log(users[roomId]);
+    io.emit('u', users);
   });
 });
 

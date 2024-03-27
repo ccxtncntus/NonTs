@@ -32,41 +32,131 @@ const Non: React.FC = () => {
   const navigate = useNavigate();
 
   const handleStart = () => {
-    const peer = new Peer();
-    peer.on('open', (id: string) => {
-      setPeerId(id);
-      if (slug) {
-        console.log(slug.id);
-        socket.emit('join-room', { roomId: slug.id, userId: id });
-      }
-    });
-    peer.on('call', (call: MediaConnection) => {
-      const getUserMedia =
-        navigator.getUserMedia ||
-        navigator.webkitGetUserMedia ||
-        navigator.mozGetUserMedia;
-
-      if (getUserMedia) {
-        getUserMedia(
-          { video: true, audio: true },
-          (mediaStream: MediaStream) => {
-            if (currentUserVideoRef.current) {
-              currentUserVideoRef.current.srcObject = mediaStream;
-              call.answer(mediaStream);
-              call.on('stream', function (remoteStream: MediaStream) {
-                if (remoteVideoRef.current) {
-                  remoteVideoRef.current.srcObject = remoteStream;
-                  peerEndInstance.current = mediaStream;
-                }
-              });
-            }
+    socket.emit('uu');
+    socket.on('u', (data) => {
+      const result = Object.keys(data).map((key) => [key, data[key]]);
+      const newMap = result
+        .filter((i) => {
+          if (i[1].length == 1 && i[0] != slug.id) {
+            return i[0];
           }
-        );
+        })
+        .map((item) => item[0]);
+      const randomIndex = Math.floor(Math.random() * newMap.length);
+      if (newMap[randomIndex]) {
+        // có p trống
+        console.log(newMap[randomIndex]);
+        navigate('/call/' + newMap[randomIndex]);
+        const peer = new Peer();
+        peer.on('open', (id: string) => {
+          setPeerId(id);
+          socket.emit('join-room', { roomId: newMap[randomIndex], userId: id });
+        });
+        peer.on('call', (call: MediaConnection) => {
+          const getUserMedia =
+            navigator.getUserMedia ||
+            navigator.webkitGetUserMedia ||
+            navigator.mozGetUserMedia;
+
+          if (getUserMedia) {
+            getUserMedia(
+              { video: true, audio: true },
+              (mediaStream: MediaStream) => {
+                if (currentUserVideoRef.current) {
+                  currentUserVideoRef.current.srcObject = mediaStream;
+                  call.answer(mediaStream);
+                  call.on('stream', function (remoteStream: MediaStream) {
+                    if (remoteVideoRef.current) {
+                      remoteVideoRef.current.srcObject = remoteStream;
+                      peerEndInstance.current = mediaStream;
+                    }
+                  });
+                }
+              }
+            );
+          } else {
+            console.error('getUserMedia is not supported');
+          }
+        });
+        peerInstance.current = peer;
       } else {
-        console.error('getUserMedia is not supported');
+        // không có
+        const idv4 = uuidv4();
+        // console.log(idv4);
+        navigate('/call/' + idv4);
+        const peer = new Peer();
+        peer.on('open', (id: string) => {
+          setPeerId(id);
+          // console.log(idv4);
+          socket.emit('join-room', { roomId: idv4, userId: id });
+        });
+        peer.on('call', (call: MediaConnection) => {
+          const getUserMedia =
+            navigator.getUserMedia ||
+            navigator.webkitGetUserMedia ||
+            navigator.mozGetUserMedia;
+
+          if (getUserMedia) {
+            getUserMedia(
+              { video: true, audio: true },
+              (mediaStream: MediaStream) => {
+                if (currentUserVideoRef.current) {
+                  currentUserVideoRef.current.srcObject = mediaStream;
+                  call.answer(mediaStream);
+                  call.on('stream', function (remoteStream: MediaStream) {
+                    if (remoteVideoRef.current) {
+                      remoteVideoRef.current.srcObject = remoteStream;
+                      peerEndInstance.current = mediaStream;
+                    }
+                  });
+                }
+              }
+            );
+          } else {
+            console.error('getUserMedia is not supported');
+          }
+        });
+        peerInstance.current = peer;
       }
+      socket.off('u');
     });
-    peerInstance.current = peer;
+    return;
+
+    // const peer = new Peer();
+    // peer.on('open', (id: string) => {
+    //   setPeerId(id);
+    //   if (slug) {
+    //     console.log(slug.id);
+    //     socket.emit('join-room', { roomId: slug.id, userId: id });
+    //   }
+    // });
+    // peer.on('call', (call: MediaConnection) => {
+    //   const getUserMedia =
+    //     navigator.getUserMedia ||
+    //     navigator.webkitGetUserMedia ||
+    //     navigator.mozGetUserMedia;
+
+    //   if (getUserMedia) {
+    //     getUserMedia(
+    //       { video: true, audio: true },
+    //       (mediaStream: MediaStream) => {
+    //         if (currentUserVideoRef.current) {
+    //           currentUserVideoRef.current.srcObject = mediaStream;
+    //           call.answer(mediaStream);
+    //           call.on('stream', function (remoteStream: MediaStream) {
+    //             if (remoteVideoRef.current) {
+    //               remoteVideoRef.current.srcObject = remoteStream;
+    //               peerEndInstance.current = mediaStream;
+    //             }
+    //           });
+    //         }
+    //       }
+    //     );
+    //   } else {
+    //     console.error('getUserMedia is not supported');
+    //   }
+    // });
+    // peerInstance.current = peer;
   };
 
   useEffect(() => {
@@ -138,7 +228,32 @@ const Non: React.FC = () => {
   };
 
   const handleNext = () => {
-    socket.emit('calluser', { slug: slug.id });
+    socket.emit('uu');
+    socket.on('u', (data) => {
+      const result = Object.keys(data).map((key) => [key, data[key]]);
+      const newMap = result
+        .filter((i) => {
+          if (i[1].length == 1 && i[0] != slug.id) {
+            return i[0];
+          }
+        })
+        .map((item) => item[0]);
+      const randomIndex = Math.floor(Math.random() * newMap.length);
+      if (newMap[randomIndex]) {
+        console.log(newMap[randomIndex]);
+      } else {
+        console.log('Không có ai cạ');
+      }
+      socket.off('u');
+    });
+    // const id = uuidv4();
+    // navigate('/call/' + id);
+    // if (slug?.id) {
+    //   console.log(slug?.id);
+    // } else {
+    //   socket.emit('calluser', { slug: id });
+    // }
+    // socket.emit('calluser', { slug: slug.id });
   };
 
   useEffect(() => {
@@ -154,17 +269,17 @@ const Non: React.FC = () => {
       socket.off('alluser');
     };
   }, []);
-  const [slugs, setslugs] = useState<string | null>(null);
-  const handleGet = () => {
-    const id = uuidv4();
-    setslugs(id);
-    navigate('/call/' + id);
-  };
-  useEffect(() => {
-    if (slugs) {
-      console.log(slugs);
-    }
-  }, [slugs]);
+  // const [slugs, setslugs] = useState<string | null>(null);
+  // const handleGet = () => {
+  //   const id = uuidv4();
+  //   setslugs(id);
+  //   navigate('/call/' + id);
+  // };
+  // useEffect(() => {
+  //   if (slugs) {
+  //     console.log(slugs);
+  //   }
+  // }, [slugs]);
 
   return (
     <>
@@ -183,9 +298,9 @@ const Non: React.FC = () => {
               <h5>
                 myid <br /> {peerId}
               </h5>
-              <button className="btn btn-success mt-2" onClick={handleGet}>
+              {/* <button className="btn btn-success mt-2" onClick={handleGet}>
                 getLink
-              </button>{' '}
+              </button>{' '} */}
               <button className="btn btn-secondary mt-2" onClick={handleStart}>
                 start{' '}
               </button>{' '}
