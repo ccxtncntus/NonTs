@@ -25,7 +25,6 @@ app.use('/api', UserRouters);
 const PORT = process.env.SERVER_PORT || 5000;
 
 const users = {};
-// const socketToRoom = {};
 io.on('connection', (socket) => {
   socket.on('join-room', ({ roomId, userId }) => {
     socket.join(roomId);
@@ -44,57 +43,29 @@ io.on('connection', (socket) => {
     } else {
       users[roomId] = [userId];
     }
-    console.log(users);
-    socket.emit('alluser', users);
+    // console.log(users);
+    socket.on('calluser', ({ slug }) => {
+      const result = Object.keys(users).map((key) => [key, users[key]]);
+      const newMap = result
+        .filter((i) => {
+          if (i[1].length === 1 && i[0] != slug) {
+            return i[0];
+          }
+        })
+        .map((item) => item[0]);
+      const randomIndex = Math.floor(Math.random() * newMap.length); // Lấy một chỉ số ngẫu nhiên
+      if (newMap[randomIndex]) {
+        io.to(roomId).emit('alluser', newMap[randomIndex]);
+      } else {
+        io.to(roomId).emit('alluser', 0);
+      }
+    });
     io.to(roomId).emit('userConnected', users[roomId]);
     socket.on('out', ({ idpeer }) => {
-      console.log(idpeer);
       users[roomId] = users[roomId].filter((id) => id !== idpeer);
       console.log(users[roomId]);
       io.to(roomId).emit('userOut', users[roomId]);
     });
-    // }
-    //   socket.on("user", (data) => {
-    //     io.in(roomId).emit("user", data);
-    //   });
-    //   socket.on("add_data", (data) => {
-    //     io.to(roomId).emit("mesdata", data);
-    //   });
-    // });
-    // socket.on("add", (data) => {
-    //   io.emit("ms", data);
-    // });
-    // socket.on("join room", (roomID) => {
-    //   if (users[roomID]) {
-    //     const length = users[roomID].length;
-    //     if (length === 4) {
-    //       socket.emit("room full");
-    //       return;
-    //     }
-    //     if (!users[roomID].includes(socket.id)) {
-    //       users[roomID].push(socket.id);
-    //     }
-    //   } else {
-    //     users[roomID] = [socket.id];
-    //   }
-    //   socketToRoom[socket.id] = roomID;
-    //   if (users[roomID]) {
-    //     console.log(users[roomID]);
-    //     socket.emit("all users", users[roomID]);
-    //   }
-    // });
-    // socket.on("sending signal", (payload) => {
-    //   io.to(payload.userToSignal).emit("user joined", {
-    //     signal: payload.signal,
-    //     callerID: payload.callerID,
-    //   });
-    // });
-    // socket.on("returning signal", (payload) => {
-    //   io.to(payload.callerID).emit("receiving returned signal", {
-    //     signal: payload.signal,
-    //     id: socket.id,
-    //   });
-    // });
     // socket.on("disconnect", () => {
     //   const roomID = socketToRoom[socket.id];
     //   let room = users[roomID];

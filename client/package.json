@@ -14,6 +14,7 @@
     "@emotion/styled": "^11.11.0",
     "@mui/icons-material": "^5.15.14",
     "@mui/material": "^5.15.14",
+    "@types/peerjs": "^1.1.0",
     "@types/uuid": "^9.0.8",
     "axios": "^1.6.7",
     "bootstrap": "^5.3.3",
