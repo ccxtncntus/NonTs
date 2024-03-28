@@ -1,15 +1,22 @@
 import './login.css';
 import Form from 'react-bootstrap/Form';
-import { Link, NavLink, useNavigate } from 'react-router-dom';
-import TextField from '@mui/material/TextField';
-import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import React, { useState, useContext, useEffect } from 'react';
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
+import * as AccountService from '../../services/AccountService';
+import { toast } from 'sonner';
+import { setCookie } from 'typescript-cookie';
 type login = {
   email: string;
   password: string;
 };
-
+import { AccountContext } from '../../contexts/nonts/AccountContext';
 const Login = () => {
+  const { account, setAccount } = useContext(AccountContext);
+  useEffect(() => {
+    console.log(account);
+  }, []);
+
   const navigate = useNavigate();
   const [dataLogin, setdataLogin] = useState<login>({
     email: '',
@@ -45,11 +52,17 @@ const Login = () => {
     const { value, name } = e.target;
     setdataLogin({ ...dataLogin, [name]: value });
   };
-  const handleLogin = (): void => {
+  const handleLogin = async () => {
     if (validate()) {
-      console.log(dataLogin);
-
-      // navigate('/');
+      const { email, password } = dataLogin;
+      const login = await AccountService.login({ email, password });
+      if (login.success == true) {
+        setCookie('tokenNonts', login.token, { expires: 7, path: '' });
+        setAccount(1);
+        navigate('/');
+        return;
+      }
+      toast.error(login.mgs);
     }
   };
   return (

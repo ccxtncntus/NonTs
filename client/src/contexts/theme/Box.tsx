@@ -1,5 +1,5 @@
-import { useContext, useState } from "react";
-import { themeContext } from "./ThemeContext";
+import { useContext, useState } from 'react';
+import { themeContext } from './ThemeContext';
 const Box = () => {
   const theme = useContext(themeContext);
   const [isLight, setisLight] = useState<boolean>(false);
@@ -23,7 +23,7 @@ const Box = () => {
         </div>
       )}
       <button className="btn btn-secondary m-1" onClick={handleTheme}>
-        {isLight ? "light" : "dark"}
+        {isLight ? 'light' : 'dark'}
       </button>
     </>
   );

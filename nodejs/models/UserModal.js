@@ -17,6 +17,9 @@ const userSchema = new Schema({
   curentToken: {
     type: String,
   },
+  refreshToken: {
+    type: String,
+  },
   role: {
     type: String,
   },

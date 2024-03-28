@@ -3,7 +3,9 @@ import Form from 'react-bootstrap/Form';
 import { Link, useNavigate } from 'react-router-dom';
 import React, { useState } from 'react';
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
-import { Toaster, toast } from 'sonner';
+import { toast } from 'sonner';
+import * as AccountService from '../../services/AccountService';
+import { setCookie } from 'typescript-cookie';
 type login = {
   email: string;
   otp: string;
@@ -19,8 +21,8 @@ const Forgotpass = () => {
     email: '',
     otp: '',
   });
-
-  const validate = () => {
+  const [IsSendMail, setIsSendMail] = useState<boolean>(false);
+  const validateMail = () => {
     const { email } = dataLogin;
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (email.trim() === '') {
@@ -34,6 +36,15 @@ const Forgotpass = () => {
 
     return true;
   };
+  const validateOtp = () => {
+    const { otp } = dataLogin;
+    if (otp.trim() === '') {
+      seterr({ ...err, otp: 'Không bỏ trống otp' });
+      return false;
+    }
+
+    return true;
+  };
   const handleDataLogin = (e: React.ChangeEvent<HTMLInputElement>) => {
     seterr({
       email: '',
@@ -42,21 +53,45 @@ const Forgotpass = () => {
     const { value, name } = e.target;
     setdataLogin({ ...dataLogin, [name]: value });
   };
-  const handleGetOtp = (): void => {
-    if (validate()) {
-      console.log(dataLogin);
-      navigate('/forgotpass/change');
-      toast.success('Đăng kí thành công');
-      setdataLogin({
-        email: '',
-        otp: '',
-      });
+  const [loading, setloading] = useState<boolean>(false);
+  const handleGetOtp = async () => {
+    if (validateMail()) {
+      const { email } = dataLogin;
+      setloading(true);
+      const checkMail = await AccountService.forgotpassword({ email });
+      console.log(checkMail);
+      if (checkMail.success == true) {
+        toast.success('Kiểm tra mã xác nhận trong mail của bạn');
+        setloading(false);
+        setIsSendMail(true);
+        return;
+      }
+      toast.error(checkMail.mgs);
+      setloading(false);
+    }
+  };
+  const handleCheckOtp = async () => {
+    if (validateOtp()) {
+      const { email, otp } = dataLogin;
+      setloading(true);
+      const checkOtp = await AccountService.checkRefeshToken({ email, otp });
+
+      if (checkOtp.success == true) {
+        toast.success('Đúng token r');
+        navigate('/forgotpass/change');
+        const currentTime = new Date();
+        const expirationTime = new Date(currentTime.getTime() + 5 * 60 * 1000);
+        setCookie('emailPass', email, { expires: expirationTime, path: '' });
+        setloading(false);
+        return;
+      }
+      toast.error(checkOtp.mgs);
+      setloading(false);
     }
   };
   return (
     // forgotpass;
     <section className="register">
-      <Toaster richColors position="top-center" />
       <div className="register_mark row">
         <div className="col-md-6">
           <img src="" alt="" />
@@ -77,6 +112,7 @@ const Forgotpass = () => {
               style={{ color: 'gray' }}
             >
               <Form.Control
+                disabled={IsSendMail}
                 type="email"
                 name="email"
                 value={dataLogin.email}
@@ -100,7 +136,7 @@ const Forgotpass = () => {
               style={{ color: 'gray' }}
             >
               <Form.Control
-                // disabled
+                disabled={!IsSendMail}
                 name="otp"
                 value={dataLogin.otp}
                 onChange={handleDataLogin}
@@ -115,9 +151,25 @@ const Forgotpass = () => {
             </FloatingLabel>
             {/* btn */}
             <div className="mt-2 p-0" style={{ textAlign: 'center' }}>
-              <button onClick={handleGetOtp} className="register_btn mt-4">
-                Get OTP
-              </button>
+              {!IsSendMail && (
+                <button
+                  disabled={loading}
+                  onClick={handleGetOtp}
+                  className="register_btn mt-4"
+                >
+                  {loading ? <div className="loader"></div> : 'Get OTP'}
+                </button>
+              )}
+
+              {IsSendMail && (
+                <button
+                  disabled={loading}
+                  onClick={handleCheckOtp}
+                  className="register_btn mt-4"
+                >
+                  {loading ? <div className="loader"></div> : 'Xác nhận'}
+                </button>
+              )}
             </div>
           </div>
           <Form.Label className="mt-4">

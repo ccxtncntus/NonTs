@@ -1,9 +1,12 @@
 import './changepassforgot.css';
 import Form from 'react-bootstrap/Form';
 import { Link, useNavigate } from 'react-router-dom';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import { Toaster, toast } from 'sonner';
+import { getCookie } from 'typescript-cookie';
+import * as AccountService from '../../services/AccountService';
+
 type login = {
   confirmpassword: string;
   password: string;
@@ -19,10 +22,16 @@ const ChangePassForgot = () => {
     confirmpassword: '',
     password: '',
   });
+  const [emailChange, setemailChange] = useState<string | null>(null);
+  useEffect(() => {
+    const emailChangePass = getCookie('emailPass');
+    if (emailChangePass) {
+      setemailChange(emailChangePass);
+    }
+  }, []);
 
   const validate = () => {
     const { confirmpassword, password } = dataLogin;
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (password.trim() === '') {
       seterr({ ...err, password: 'Không bỏ trống' });
       return false;
@@ -45,11 +54,25 @@ const ChangePassForgot = () => {
     const { value, name } = e.target;
     setdataLogin({ ...dataLogin, [name]: value });
   };
-  const handleLogin = (): void => {
+  const handleChangePass = async () => {
     if (validate()) {
-      toast.success('Đổi mật khẩu thành công');
-      console.log(dataLogin);
-      // navigate('/');
+      if (emailChange) {
+        console.log(dataLogin.password, emailChange);
+        const change = await AccountService.changeForgotPassword({
+          email: emailChange,
+          password: dataLogin.password,
+        });
+        if (change.success == true) {
+          toast.success('Đổi mật khẩu thành công');
+          setTimeout(() => {
+            navigate('/login');
+          }, 1500);
+          return;
+        }
+        toast.success(change.mgs);
+        return;
+      }
+      toast.error('Hết thời gian đổi mật khẩu');
     }
   };
   return (
@@ -109,7 +132,7 @@ const ChangePassForgot = () => {
             </span>
             {/*  */}
             <div className="mt-2 p-0" style={{ textAlign: 'center' }}>
-              <button onClick={handleLogin} className="login_btn mt-4">
+              <button onClick={handleChangePass} className="login_btn mt-4">
                 Change
               </button>
             </div>
@@ -126,5 +149,4 @@ const ChangePassForgot = () => {
     </section>
   );
 };
-
 export default ChangePassForgot;

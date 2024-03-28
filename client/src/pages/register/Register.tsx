@@ -1,9 +1,10 @@
 import './register.css';
 import Form from 'react-bootstrap/Form';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import React, { useState } from 'react';
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import { Toaster, toast } from 'sonner';
+import * as AccountService from '../../services/AccountService';
 type login = {
   email: string;
   password: string;
@@ -12,7 +13,6 @@ type login = {
 };
 
 const Register = () => {
-  const navigate = useNavigate();
   const [dataLogin, setdataLogin] = useState<login>({
     email: '',
     password: '',
@@ -45,7 +45,6 @@ const Register = () => {
       seterr({ ...err, password: 'Không bỏ trống' });
       return false;
     }
-
     if (confirmPass.trim() === '') {
       seterr({ ...err, confirmPass: 'Không bỏ trống' });
       return false;
@@ -66,17 +65,26 @@ const Register = () => {
     const { value, name } = e.target;
     setdataLogin({ ...dataLogin, [name]: value });
   };
-  const handleRegister = (): void => {
+  const handleRegister = async () => {
     if (validate()) {
-      console.log(dataLogin);
-      // navigate('/');
-      toast.success('Đăng kí thành công');
-      setdataLogin({
-        email: '',
-        password: '',
-        name: '',
-        confirmPass: '',
+      const { name, email, password } = dataLogin;
+      const register = await AccountService.register({
+        name,
+        email,
+        password,
       });
+      console.log(register);
+      if (register.success) {
+        toast.success('Đăng kí thành công');
+        setdataLogin({
+          email: '',
+          password: '',
+          name: '',
+          confirmPass: '',
+        });
+        return;
+      }
+      toast.error(register.mgs);
     }
   };
   return (
@@ -96,7 +104,7 @@ const Register = () => {
             </span>
             {/* email */}
             <FloatingLabel
-              controlId="floatingInput"
+              controlId="floatingInput1"
               label="Email"
               className="mt-4 px-1"
               style={{ color: 'gray' }}
@@ -119,7 +127,7 @@ const Register = () => {
             </span>
             {/* name */}
             <FloatingLabel
-              controlId="floatingPassword"
+              controlId="floatingPassword2"
               label="Name"
               className="mt-4 px-1"
               style={{ color: 'gray' }}
@@ -139,7 +147,7 @@ const Register = () => {
             </FloatingLabel>
             {/* password */}
             <FloatingLabel
-              controlId="floatingPassword"
+              controlId="floatingPassword3"
               label="Password"
               className="mt-4 px-1"
               style={{ color: 'gray' }}

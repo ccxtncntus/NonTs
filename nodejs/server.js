@@ -20,6 +20,7 @@ mongoose.connect(process.env.SERVER_MONGO);
 app.use(express.static('public'));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+
 app.use('/api', UserRouters);
 
 const PORT = process.env.SERVER_PORT || 5000;

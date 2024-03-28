@@ -19,6 +19,7 @@ const ContactCV = lazy(() => import('./components/cv/Contact'));
 const ResumeCV = lazy(() => import('./components/cv/Resume'));
 const BannerCV = lazy(() => import('./components/cv/Banner'));
 const DownLoadCV = lazy(() => import('./components/cv/download/DownLoad'));
+import { Toaster } from 'sonner';
 
 import Loading from './components/cv/Loading';
 
@@ -28,6 +29,7 @@ const LoginLazy = lazy(() => import('./pages/login/Login'));
 function App() {
   return (
     <>
+      <Toaster richColors position="top-center" />
       <Routes>
         <Route path="/" element={<Home />}>
           <Route path="/" element={<HomeContent />} />
@@ -108,7 +110,6 @@ function App() {
               </Suspense>
             }
           />
-          {/* <Route path="/cv/loading" element={<Loading />} /> */}
         </Route>
         <Route
           path="download-cv"
@@ -118,8 +119,6 @@ function App() {
             </Suspense>
           }
         />
-        {/* <Route path="/non" element={<Non />} /> */}
-        {/* <Route path="/non/:id" element={<Non />} /> */}
         <Route path="/tv" element={<Tv />} />
         <Route
           path="/login"

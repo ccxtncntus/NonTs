@@ -2,11 +2,15 @@ import { useState } from 'react';
 import './header.css';
 import { NavLink } from 'react-router-dom';
 import logoVip from '../../assets/logoDone.png';
+import { removeCookie } from 'typescript-cookie';
 const Header = () => {
   const [ShowMenuUser, setShowMenuUser] = useState<boolean>(false);
   const [ProDuctsMenu, setProDuctsMenu] = useState<boolean>(false);
   const handleShowMenuUser = (): void => {
     setShowMenuUser((pre) => !pre);
+  };
+  const handleLogOut = () => {
+    removeCookie('tokenNonts', { path: '' });
   };
   return (
     <div className={'header_ad sticky '}>
@@ -85,7 +89,9 @@ const Header = () => {
                 </NavLink>
               </li>
               <li>
-                Đăng Xuất <i className="fa-solid fa-right-from-bracket"></i>
+                <NavLink onClick={handleLogOut} to={'/login'}>
+                  Đăng Xuất <i className="fa-solid fa-right-from-bracket"></i>
+                </NavLink>
               </li>
             </ul>
           </div>

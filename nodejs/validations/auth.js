@@ -7,7 +7,7 @@ const registerValidator = (data) => {
     role: Joi.string().default('user'),
     curentToken: Joi.string(),
     password: Joi.string()
-      .pattern(new RegExp('^[a-zA-Z0-9]{6,20}$'))
+      // .pattern(new RegExp('^[a-zA-Z0-9]{6,20}$'))
       .required(),
   });
   return rule.validate(data);

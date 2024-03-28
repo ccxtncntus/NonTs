@@ -1,8 +1,8 @@
-import axios from "axios";
+import axios from 'axios';
 // import { APP_URL, APP_WEB } from "./config";
 
 const request = axios.create({
-  baseURL: "http://localhost:3000",
+  baseURL: 'http://localhost:8888',
 });
 // export const deldete = async (path: string, option) => {
 //   const response = await request.post(
