@@ -1,27 +1,27 @@
-import './login.css';
+import './forgotpass.css';
 import Form from 'react-bootstrap/Form';
-import { Link, NavLink, useNavigate } from 'react-router-dom';
-import TextField from '@mui/material/TextField';
+import { Link, useNavigate } from 'react-router-dom';
 import React, { useState } from 'react';
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
+import { Toaster, toast } from 'sonner';
 type login = {
   email: string;
-  password: string;
+  otp: string;
 };
 
-const Login = () => {
+const Forgotpass = () => {
   const navigate = useNavigate();
   const [dataLogin, setdataLogin] = useState<login>({
     email: '',
-    password: '',
+    otp: '',
   });
   const [err, seterr] = useState<login>({
     email: '',
-    password: '',
+    otp: '',
   });
 
   const validate = () => {
-    const { email, password } = dataLogin;
+    const { email } = dataLogin;
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (email.trim() === '') {
       seterr({ ...err, email: 'Không bỏ trống' });
@@ -31,38 +31,45 @@ const Login = () => {
       seterr({ ...err, email: 'Email không hợp lệ' });
       return false;
     }
-    if (password.trim() === '') {
-      seterr({ ...err, password: 'Không bỏ trống' });
-      return false;
-    }
+
     return true;
   };
   const handleDataLogin = (e: React.ChangeEvent<HTMLInputElement>) => {
     seterr({
       email: '',
-      password: '',
+      otp: '',
     });
     const { value, name } = e.target;
     setdataLogin({ ...dataLogin, [name]: value });
   };
-  const handleLogin = (): void => {
+  const handleGetOtp = (): void => {
     if (validate()) {
       console.log(dataLogin);
-
-      // navigate('/');
+      navigate('/forgotpass/change');
+      toast.success('Đăng kí thành công');
+      setdataLogin({
+        email: '',
+        otp: '',
+      });
     }
   };
   return (
-    <section className="login">
-      <div className="login_mark row">
-        <div className="col-md-6 login_mark_col">
-          <h1 className="login_form_title_logo login_form_title">
-            Welcome to <span className="vip">Nonts</span>
+    // forgotpass;
+    <section className="register">
+      <Toaster richColors position="top-center" />
+      <div className="register_mark row">
+        <div className="col-md-6">
+          <img src="" alt="" />
+        </div>
+        <div className="col-md-6 register_mark_col">
+          <h1 className="register_form_title_logo register_form_title">
+            Forgot <span className="vip">password</span>
           </h1>
-          <div className="login_form row mt-2">
+          <div className="register_form row mt-2">
             <span className="vip" style={{ textAlign: 'center' }}>
-              User login
+              User forgot password
             </span>
+            {/* email */}
             <FloatingLabel
               controlId="floatingInput"
               label="Email"
@@ -79,49 +86,50 @@ const Login = () => {
                 focus-ring-danger"
               />
             </FloatingLabel>
-
-            <span className="text-danger p-0" style={{ fontSize: '.9rem' }}>
+            <span
+              className="text-danger mt-1 px-1"
+              style={{ fontSize: '.9rem' }}
+            >
               {err.email != '' && err.email}
             </span>
+            {/* otp */}
             <FloatingLabel
               controlId="floatingPassword"
-              label="Password"
+              label="Mã xác nhận"
               className="mt-4 px-1"
               style={{ color: 'gray' }}
             >
               <Form.Control
-                name="password"
-                value={dataLogin.password}
+                // disabled
+                name="otp"
+                value={dataLogin.otp}
                 onChange={handleDataLogin}
-                type="password"
-                placeholder="Password"
+                type="text"
+                placeholder="otp"
                 className="focus-ring
                 focus-ring-danger"
               />
-              <span className="text-danger p-0" style={{ fontSize: '.9rem' }}>
-                {err.password != '' && err.password}
+              <span className="text-danger" style={{ fontSize: '.9rem' }}>
+                {err.otp != '' && err.otp}
               </span>
             </FloatingLabel>
+            {/* btn */}
             <div className="mt-2 p-0" style={{ textAlign: 'center' }}>
-              <button onClick={handleLogin} className="login_btn mt-4">
-                Login
+              <button onClick={handleGetOtp} className="register_btn mt-4">
+                Get OTP
               </button>
             </div>
           </div>
-          <Link className="vip viphv mt-2" to={'/forgotpass'}>
-            Quyên mật khẩu?
-          </Link>
-          <Form.Label className="mt-1">
-            Chưa có tài khoản?{' '}
-            <Link className="vip viphv" to={'/register'}>
-              Đăng ký
+          <Form.Label className="mt-4">
+            Đã có tài khoản?{' '}
+            <Link className="vip viphv" to={'/login'}>
+              Đăng nhập
             </Link>
           </Form.Label>
         </div>
-        <div className="col-md-6"></div>
       </div>
     </section>
   );
 };
 
-export default Login;
+export default Forgotpass;

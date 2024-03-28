@@ -9,3 +9,17 @@ body {
   --vip: rgb(241, 43, 178);
   --puple: #c770f0;
 }
+
+.vip {
+  color: var(--vip);
+  transition: text-shadow 0.3s ease;
+  text-decoration: none;
+}
+
+.viphv:hover {
+  text-shadow: 0 0 5px var(--vip), 0 0 10px var(--vip), 0 0 15px var(--vip),
+    0 0 20px var(--vip), 0 0 30px var(--vip), 0 0 40px var(--vip),
+    0 0 50px var(--vip), 0 0 75px var(--vip);
+  color: white;
+  transition: all 0.5s;
+}

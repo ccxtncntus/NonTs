@@ -1,45 +1,45 @@
-import './login.css';
+import './changepassforgot.css';
 import Form from 'react-bootstrap/Form';
-import { Link, NavLink, useNavigate } from 'react-router-dom';
-import TextField from '@mui/material/TextField';
+import { Link, useNavigate } from 'react-router-dom';
 import React, { useState } from 'react';
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
+import { Toaster, toast } from 'sonner';
 type login = {
-  email: string;
+  confirmpassword: string;
   password: string;
 };
 
-const Login = () => {
+const ChangePassForgot = () => {
   const navigate = useNavigate();
   const [dataLogin, setdataLogin] = useState<login>({
-    email: '',
+    confirmpassword: '',
     password: '',
   });
   const [err, seterr] = useState<login>({
-    email: '',
+    confirmpassword: '',
     password: '',
   });
 
   const validate = () => {
-    const { email, password } = dataLogin;
+    const { confirmpassword, password } = dataLogin;
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (email.trim() === '') {
-      seterr({ ...err, email: 'Không bỏ trống' });
-      return false;
-    }
-    if (!emailRegex.test(email)) {
-      seterr({ ...err, email: 'Email không hợp lệ' });
-      return false;
-    }
     if (password.trim() === '') {
       seterr({ ...err, password: 'Không bỏ trống' });
+      return false;
+    }
+    if (confirmpassword.trim() === '') {
+      seterr({ ...err, confirmpassword: 'Không bỏ trống' });
+      return false;
+    }
+    if (password.trim() != confirmpassword.trim()) {
+      seterr({ ...err, confirmpassword: 'Nhập lại không đúng' });
       return false;
     }
     return true;
   };
   const handleDataLogin = (e: React.ChangeEvent<HTMLInputElement>) => {
     seterr({
-      email: '',
+      confirmpassword: '',
       password: '',
     });
     const { value, name } = e.target;
@@ -47,42 +47,25 @@ const Login = () => {
   };
   const handleLogin = (): void => {
     if (validate()) {
+      toast.success('Đổi mật khẩu thành công');
       console.log(dataLogin);
-
       // navigate('/');
     }
   };
   return (
     <section className="login">
+      <Toaster position="top-center" expand={false} richColors />
       <div className="login_mark row">
         <div className="col-md-6 login_mark_col">
           <h1 className="login_form_title_logo login_form_title">
-            Welcome to <span className="vip">Nonts</span>
+            Change <span className="vip">password</span>
           </h1>
           <div className="login_form row mt-2">
             <span className="vip" style={{ textAlign: 'center' }}>
-              User login
+              Change password user
             </span>
-            <FloatingLabel
-              controlId="floatingInput"
-              label="Email"
-              className="mt-4 px-1"
-              style={{ color: 'gray' }}
-            >
-              <Form.Control
-                type="email"
-                name="email"
-                value={dataLogin.email}
-                onChange={handleDataLogin}
-                placeholder="name@example.com"
-                className="focus-ring
-                focus-ring-danger"
-              />
-            </FloatingLabel>
 
-            <span className="text-danger p-0" style={{ fontSize: '.9rem' }}>
-              {err.email != '' && err.email}
-            </span>
+            {/*  */}
             <FloatingLabel
               controlId="floatingPassword"
               label="Password"
@@ -102,19 +85,39 @@ const Login = () => {
                 {err.password != '' && err.password}
               </span>
             </FloatingLabel>
+
+            {/*  */}
+            <FloatingLabel
+              controlId="floatingInput"
+              label="Confirm password"
+              className="mt-4 px-1"
+              style={{ color: 'gray' }}
+            >
+              <Form.Control
+                type="password"
+                name="confirmpassword"
+                value={dataLogin.confirmpassword}
+                onChange={handleDataLogin}
+                placeholder="pass"
+                className="focus-ring
+                focus-ring-danger"
+              />
+            </FloatingLabel>
+
+            <span className="text-danger p-0" style={{ fontSize: '.9rem' }}>
+              {err.confirmpassword != '' && err.confirmpassword}
+            </span>
+            {/*  */}
             <div className="mt-2 p-0" style={{ textAlign: 'center' }}>
               <button onClick={handleLogin} className="login_btn mt-4">
-                Login
+                Change
               </button>
             </div>
           </div>
-          <Link className="vip viphv mt-2" to={'/forgotpass'}>
-            Quyên mật khẩu?
-          </Link>
-          <Form.Label className="mt-1">
-            Chưa có tài khoản?{' '}
-            <Link className="vip viphv" to={'/register'}>
-              Đăng ký
+          <Form.Label className="mt-4">
+            Quay lại?{' '}
+            <Link className="vip viphv" to={'/login'}>
+              Đăng nhập
             </Link>
           </Form.Label>
         </div>
@@ -124,4 +127,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default ChangePassForgot;

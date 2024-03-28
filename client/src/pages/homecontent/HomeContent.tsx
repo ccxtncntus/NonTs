@@ -3,7 +3,6 @@ const HomeContent = () => {
   return (
     <>
       <Banner />
-      more
     </>
   );
 };

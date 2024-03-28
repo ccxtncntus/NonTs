@@ -5,8 +5,12 @@ import Products from './pages/products/Products';
 import HomeContent from './pages/homecontent/HomeContent';
 import Contact from './pages/contact/Contact';
 import Blog from './pages/blog/Blog';
-// import Non from './pages/non/Non';
 const NonLazy = lazy(() => import('./pages/non/Non'));
+const RegisterLazy = lazy(() => import('./pages/register/Register'));
+const ForgotpassLazy = lazy(() => import('./pages/forgotpass/Forgotpass'));
+const ForgotpassChangeLazy = lazy(
+  () => import('./pages/changepass/ChangePassForgot')
+);
 
 import Cv from './pages/cv/Cv';
 const AboutCV = lazy(() => import('./components/cv/About'));
@@ -122,6 +126,30 @@ function App() {
           element={
             <Suspense fallback={'loading...'}>
               <LoginLazy />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/register"
+          element={
+            <Suspense fallback={'loading...'}>
+              <RegisterLazy />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/forgotpass"
+          element={
+            <Suspense fallback={'loading...'}>
+              <ForgotpassLazy />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/forgotpass/change"
+          element={
+            <Suspense fallback={'loading...'}>
+              <ForgotpassChangeLazy />
             </Suspense>
           }
         />
