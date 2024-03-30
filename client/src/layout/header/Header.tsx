@@ -23,11 +23,11 @@ const Header = () => {
             <li>
               <NavLink to={'/'}>Home</NavLink>
             </li>
-            <li>
+            {/* <li>
               <span className="header_menu_show_nemu">
                 <NavLink to={'/products'}>
                   Sản phẩm
-                  {/* <i className="fa-solid fa-angle-up"></i> */}
+                  <i className="fa-solid fa-angle-up"></i>
                 </NavLink>
                 <i
                   onClick={() => setProDuctsMenu((pre) => !pre)}
@@ -38,7 +38,7 @@ const Header = () => {
                   }
                 ></i>
               </span>
-            </li>
+            </li> */}
             <li>
               <NavLink to={'/contact'}>Liên hệ</NavLink>
             </li>

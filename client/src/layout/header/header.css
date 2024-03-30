@@ -19,8 +19,8 @@
 
 /* logo */
 .header .header_logo img {
-  width: 72px;
-  height: 72px;
+  width: 60px;
+  height: 60px;
   border-radius: 50%;
   object-fit: cover;
 }
@@ -57,7 +57,7 @@
 }
 .header .header_menu ul li {
   display: inline-block;
-  margin: 12px;
+  margin: 12px 20px;
   padding: 10px;
   position: relative;
 }
@@ -104,8 +104,8 @@
   gap: 20px;
 }
 .header .header_icon .header_icon_av img {
-  width: 40px;
-  height: 40px;
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
   object-fit: cover;
 }

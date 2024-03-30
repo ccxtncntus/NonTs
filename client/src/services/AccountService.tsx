@@ -45,6 +45,17 @@ const changeForgotPassword = async (data: LoginType) => {
   const register = await request.patch('/api/changeForgotPassword', data);
   return register.data;
 };
+const getUsersCurent = async (token: string) => {
+  const curentUser = await request.get('/api/getUsersCurent', {
+    headers: {
+      authorization: `Bearer ${token}`,
+    },
+  });
+  if (curentUser.data.success == true) {
+    return curentUser.data.curent;
+  }
+  return curentUser.data.mgs;
+};
 
 export {
   register,
@@ -53,4 +64,5 @@ export {
   sendOtp,
   checkRefeshToken,
   changeForgotPassword,
+  getUsersCurent,
 };

@@ -88,10 +88,12 @@ const login = async (req, res) => {
       { curentToken: accessToken },
       { upsert: true }
     );
+    const { _id, name, email: emailu, role, createAt } = checkMailExists;
     return res.status(200).json({
       success: true,
       mgs: 'Đăng nhập thành công',
       token: accessToken,
+      curent: { _id, name, email: emailu, role, createAt },
     });
   } catch (error) {
     return res.status(400).json({
@@ -223,6 +225,22 @@ const getUsers = async (req, res) => {
     });
   }
 };
+const getUsersCurent = async (req, res) => {
+  try {
+    const dataU = req.verifiedData;
+    const data = await UserModal.findOne({ email: dataU.email }).exec();
+    const { _id, name, email: emailu, role, createAt } = data;
+    return res.status(200).json({
+      success: true,
+      curent: { _id, name, email: emailu, role, createAt },
+    });
+  } catch (error) {
+    return res.status(200).json({
+      success: false,
+      mgs: error.message,
+    });
+  }
+};
 
 export {
   register,
@@ -231,4 +249,5 @@ export {
   forgotPassword,
   checkRefeshToken,
   changeForgotPassword,
+  getUsersCurent,
 };

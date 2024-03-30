@@ -12,10 +12,7 @@ type login = {
 };
 import { AccountContext } from '../../contexts/nonts/AccountContext';
 const Login = () => {
-  const { account, setAccount } = useContext(AccountContext);
-  useEffect(() => {
-    console.log(account);
-  }, []);
+  const { setAccount } = useContext(AccountContext);
 
   const navigate = useNavigate();
   const [dataLogin, setdataLogin] = useState<login>({
@@ -58,7 +55,7 @@ const Login = () => {
       const login = await AccountService.login({ email, password });
       if (login.success == true) {
         setCookie('tokenNonts', login.token, { expires: 7, path: '' });
-        setAccount(1);
+        setAccount(login.curent);
         navigate('/');
         return;
       }

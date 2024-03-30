@@ -4,10 +4,12 @@
 import { v4 as uuidv4 } from 'uuid';
 import { socket } from '../../socket/SocketIo';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useContext, useState } from 'react';
 import './non.css';
 import Peer, { MediaConnection } from 'peerjs';
-import videoTest from '../../assets/video/anime.mp4';
+import { AccountContext } from '../../contexts/nonts/AccountContext';
+import { toast } from 'sonner';
+
 type GetUserMediaFunc = (
   constraints: MediaStreamConstraints,
   successCallback: (stream: MediaStream) => void
@@ -20,14 +22,23 @@ declare global {
     mozGetUserMedia: GetUserMediaFunc | undefined;
   }
 }
-
+type account = {
+  createAt: Date;
+  email: string;
+  name: string;
+  role: string;
+  _id: string;
+};
 const Non: React.FC = () => {
+  const { account } = useContext(AccountContext);
+  const [curent, setcurent] = useState<account | null>(null);
   const [peerId, setPeerId] = useState<string>('');
-  const [remotePeerIdValue, setRemotePeerIdValue] = useState<string>('');
+  // const [remotePeerIdValue, setRemotePeerIdValue] = useState<string>('');
   const remoteVideoRef = useRef<HTMLVideoElement>(null);
   const currentUserVideoRef = useRef<HTMLVideoElement>(null);
   const peerInstance = useRef<Peer | null>(null);
   const peerEndInstance = useRef<MediaStream | null>(null);
+  const peerNextInstance = useRef<MediaStream | null>(null);
   const slug = useParams();
   const navigate = useNavigate();
 
@@ -82,7 +93,6 @@ const Non: React.FC = () => {
       } else {
         // không có
         const idv4 = uuidv4();
-        // console.log(idv4);
         navigate('/call/' + idv4);
         const peer = new Peer();
         peer.on('open', (id: string) => {
@@ -121,58 +131,40 @@ const Non: React.FC = () => {
       socket.off('u');
     });
     return;
-
-    // const peer = new Peer();
-    // peer.on('open', (id: string) => {
-    //   setPeerId(id);
-    //   if (slug) {
-    //     console.log(slug.id);
-    //     socket.emit('join-room', { roomId: slug.id, userId: id });
-    //   }
-    // });
-    // peer.on('call', (call: MediaConnection) => {
-    //   const getUserMedia =
-    //     navigator.getUserMedia ||
-    //     navigator.webkitGetUserMedia ||
-    //     navigator.mozGetUserMedia;
-
-    //   if (getUserMedia) {
-    //     getUserMedia(
-    //       { video: true, audio: true },
-    //       (mediaStream: MediaStream) => {
-    //         if (currentUserVideoRef.current) {
-    //           currentUserVideoRef.current.srcObject = mediaStream;
-    //           call.answer(mediaStream);
-    //           call.on('stream', function (remoteStream: MediaStream) {
-    //             if (remoteVideoRef.current) {
-    //               remoteVideoRef.current.srcObject = remoteStream;
-    //               peerEndInstance.current = mediaStream;
-    //             }
-    //           });
-    //         }
-    //       }
-    //     );
-    //   } else {
-    //     console.error('getUserMedia is not supported');
-    //   }
-    // });
-    // peerInstance.current = peer;
   };
 
   useEffect(() => {
-    socket.on('room-full', (data) => {
-      if (data) {
-        console.log(data);
-      }
-    });
+    // socket.on('room-full', (data) => {
+    //   if (data) {
+    //     console.log(data);
+    //   }
+    // });
     socket.on('userOut', (data) => {
       if (data) {
         console.log(data);
         console.log('người dùng đã thoát');
       }
     });
+    socket.on('userNext', (data) => {
+      if (data) {
+        console.log(data);
+        console.log('người dùng đã next');
+        const tracks = peerNextInstance.current?.getTracks();
+        tracks?.map((track) => {
+          track.enabled = false;
+        });
+        setTimeout(() => {
+          console.log('tắt');
+          const tracks = peerNextInstance.current?.getTracks();
+          tracks?.map((track) => {
+            track.stop();
+          });
+        }, 1000);
+      }
+    });
     return () => {
       socket.off('userOut');
+      socket.off('userNext');
       socket.off('room-full');
     };
   }, []);
@@ -203,6 +195,8 @@ const Non: React.FC = () => {
           call.on('stream', (remoteStream: MediaStream) => {
             if (remoteVideoRef.current) {
               remoteVideoRef.current.srcObject = remoteStream;
+              peerNextInstance.current = remoteStream;
+              console.log(remoteStream);
             }
           });
         }
@@ -223,6 +217,7 @@ const Non: React.FC = () => {
       tracks?.map((track) => {
         track.stop();
       });
+      navigate('/');
     }, 1000);
     socket.emit('out', { idpeer: peerId });
   };
@@ -240,46 +235,68 @@ const Non: React.FC = () => {
         .map((item) => item[0]);
       const randomIndex = Math.floor(Math.random() * newMap.length);
       if (newMap[randomIndex]) {
-        console.log(newMap[randomIndex]);
+        navigate('/call/' + newMap[randomIndex]);
+        const peer = new Peer();
+        peer.on('open', (id: string) => {
+          setPeerId(id);
+          // console.log(idv4);
+          socket.emit('join-room', { roomId: newMap[randomIndex], userId: id });
+        });
+        peer.on('call', (call: MediaConnection) => {
+          const getUserMedia =
+            navigator.getUserMedia ||
+            navigator.webkitGetUserMedia ||
+            navigator.mozGetUserMedia;
+
+          if (getUserMedia) {
+            getUserMedia(
+              { video: true, audio: true },
+              (mediaStream: MediaStream) => {
+                if (currentUserVideoRef.current) {
+                  currentUserVideoRef.current.srcObject = mediaStream;
+                  call.answer(mediaStream);
+                  call.on('stream', function (remoteStream: MediaStream) {
+                    if (remoteVideoRef.current) {
+                      remoteVideoRef.current.srcObject = remoteStream;
+                      peerEndInstance.current = mediaStream;
+                    }
+                  });
+                }
+              }
+            );
+          } else {
+            console.error('getUserMedia is not supported');
+          }
+        });
+        peerInstance.current = peer;
+        socket.emit('next', { idpeer: peerId });
       } else {
         console.log('Không có ai cạ');
+        toast.warning('Không tìm thấy ai ');
       }
       socket.off('u');
     });
-    // const id = uuidv4();
-    // navigate('/call/' + id);
-    // if (slug?.id) {
-    //   console.log(slug?.id);
-    // } else {
-    //   socket.emit('calluser', { slug: id });
-    // }
-    // socket.emit('calluser', { slug: slug.id });
   };
 
-  useEffect(() => {
-    socket.on('alluser', (data) => {
-      if (data == 0) {
-        console.log('Không có phòng trống');
-      }
-      if (data) {
-        console.log(data);
-      }
-    });
-    return () => {
-      socket.off('alluser');
-    };
-  }, []);
-  // const [slugs, setslugs] = useState<string | null>(null);
-  // const handleGet = () => {
-  //   const id = uuidv4();
-  //   setslugs(id);
-  //   navigate('/call/' + id);
-  // };
   // useEffect(() => {
-  //   if (slugs) {
-  //     console.log(slugs);
-  //   }
-  // }, [slugs]);
+  //   socket.on('alluser', (data) => {
+  //     if (data == 0) {
+  //       console.log('Không có phòng trống');
+  //     }
+  //     if (data) {
+  //       console.log(data);
+  //     }
+  //   });
+  //   return () => {
+  //     socket.off('alluser');
+  //   };
+  // }, []);
+  useEffect(() => {
+    if (account) {
+      setcurent(account);
+      return;
+    }
+  }, [account]);
 
   return (
     <>
@@ -296,11 +313,9 @@ const Non: React.FC = () => {
             />
             <div className="col-md-6">
               <h5>
-                myid <br /> {peerId}
+                {curent && curent?.name}
+                <br /> {peerId}
               </h5>
-              {/* <button className="btn btn-success mt-2" onClick={handleGet}>
-                getLink
-              </button>{' '} */}
               <button className="btn btn-secondary mt-2" onClick={handleStart}>
                 start{' '}
               </button>{' '}
@@ -321,7 +336,7 @@ const Non: React.FC = () => {
               playsInline
               // controls
             />
-            {/*             
+            {/* 
             <div className="non_chat">
               <span>Các bạn có thể trò chuyện tại đây</span>
             </div> */}

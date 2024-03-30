@@ -53,7 +53,7 @@ io.on('connection', (socket) => {
           }
         })
         .map((item) => item[0]);
-      const randomIndex = Math.floor(Math.random() * newMap.length); // Lấy một chỉ số ngẫu nhiên
+      const randomIndex = Math.floor(Math.random() * newMap.length);
       if (newMap[randomIndex]) {
         io.to(roomId).emit('alluser', newMap[randomIndex]);
       } else {
@@ -66,18 +66,13 @@ io.on('connection', (socket) => {
       console.log(users[roomId]);
       io.to(roomId).emit('userOut', users[roomId]);
     });
-    // socket.on("disconnect", () => {
-    //   const roomID = socketToRoom[socket.id];
-    //   let room = users[roomID];
-    //   if (room) {
-    //     room = room.filter((id) => id !== socket.id);
-    //     console.log(room);
-    //     users[roomID] = room;
-    //   }
+    socket.on('next', ({ idpeer }) => {
+      users[roomId] = users[roomId].filter((id) => id !== idpeer);
+      console.log(users[roomId]);
+      io.to(roomId).emit('userNext', users[roomId]);
+    });
   });
   socket.on('uu', () => {
-    // users[roomId] = users[roomId].filter((id) => id !== idpeer);
-    // console.log(users[roomId]);
     io.emit('u', users);
   });
 });

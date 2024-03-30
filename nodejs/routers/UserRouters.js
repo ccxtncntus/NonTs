@@ -7,6 +7,7 @@ const router = express();
 router.use(express.json());
 // isAdmin;
 router.get('/getUsers', authenToken, UsersController.getUsers);
+router.get('/getUsersCurent', authenToken, UsersController.getUsersCurent);
 router.post('/register', UsersController.register);
 router.post('/login', UsersController.login);
 router.post('/forgotpassword', UsersController.forgotPassword);
