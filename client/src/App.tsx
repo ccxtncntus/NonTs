@@ -1,11 +1,7 @@
 import { Route, Routes } from 'react-router-dom';
 import { lazy, Suspense } from 'react';
 import Home from './pages/home/Home';
-import Products from './pages/products/Products';
 import HomeContent from './pages/homecontent/HomeContent';
-import Contact from './pages/contact/Contact';
-import Blog from './pages/blog/Blog';
-const NonLazy = lazy(() => import('./pages/non/Non'));
 const RegisterLazy = lazy(() => import('./pages/register/Register'));
 const ForgotpassLazy = lazy(() => import('./pages/forgotpass/Forgotpass'));
 const ForgotpassChangeLazy = lazy(
@@ -29,33 +25,30 @@ const LoginLazy = lazy(() => import('./pages/login/Login'));
 function App() {
   return (
     <>
-      <Toaster richColors position="top-center" />
+      <Toaster
+        richColors
+        position='top-center'
+      />
       <Routes>
-        <Route path="/" element={<Home />}>
-          <Route path="/" element={<HomeContent />} />
+        <Route
+          path='/'
+          element={<Home />}
+        >
           <Route
-            path="/call"
-            element={
-              <Suspense fallback={'Loading...'}>
-                <NonLazy />
-              </Suspense>
-            }
+            path='/'
+            element={<HomeContent />}
           />
           <Route
-            path="/call/:id"
-            element={
-              <Suspense fallback={'Loading...'}>
-                <NonLazy />
-              </Suspense>
-            }
+            path='/tv'
+            element={<Tv />}
           />
-          <Route path="/products" element={<Products />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="/blogs" element={<Blog />} />
         </Route>
-        <Route path="/cv" element={<Cv />}>
+        <Route
+          path='/cv'
+          element={<Cv />}
+        >
           <Route
-            path="/cv"
+            path='/cv'
             element={
               <Suspense fallback={<Loading />}>
                 <BannerCV />
@@ -63,7 +56,7 @@ function App() {
             }
           />
           <Route
-            path="/cv/home"
+            path='/cv/home'
             element={
               <Suspense fallback={<Loading />}>
                 <BannerCV />
@@ -71,7 +64,7 @@ function App() {
             }
           />
           <Route
-            path="/cv/resume"
+            path='/cv/resume'
             element={
               <Suspense fallback={<Loading />}>
                 <ResumeCV />
@@ -79,7 +72,7 @@ function App() {
             }
           />
           <Route
-            path="/cv/about"
+            path='/cv/about'
             element={
               <Suspense fallback={<Loading />}>
                 <AboutCV />
@@ -87,7 +80,7 @@ function App() {
             }
           />
           <Route
-            path="/cv/projects"
+            path='/cv/projects'
             element={
               <Suspense fallback={<Loading />}>
                 <ProjectsCV />
@@ -95,7 +88,7 @@ function App() {
             }
           />
           <Route
-            path="/cv/contact"
+            path='/cv/contact'
             element={
               <Suspense fallback={<Loading />}>
                 <ContactCV />
@@ -103,7 +96,7 @@ function App() {
             }
           />
           <Route
-            path="/cv/download"
+            path='/cv/download'
             element={
               <Suspense fallback={<Loading />}>
                 <DownLoadCV />
@@ -112,16 +105,19 @@ function App() {
           />
         </Route>
         <Route
-          path="download-cv"
+          path='download-cv'
           element={
             <Suspense fallback={<Loading />}>
               <DownLoadCV />
             </Suspense>
           }
         />
-        <Route path="/tv" element={<Tv />} />
+        {/* <Route
+          path='/tv'
+          element={<Tv />}
+        /> */}
         <Route
-          path="/login"
+          path='/login'
           element={
             <Suspense fallback={'loading...'}>
               <LoginLazy />
@@ -129,7 +125,7 @@ function App() {
           }
         />
         <Route
-          path="/register"
+          path='/register'
           element={
             <Suspense fallback={'loading...'}>
               <RegisterLazy />
@@ -137,7 +133,7 @@ function App() {
           }
         />
         <Route
-          path="/forgotpass"
+          path='/forgotpass'
           element={
             <Suspense fallback={'loading...'}>
               <ForgotpassLazy />
@@ -145,7 +141,7 @@ function App() {
           }
         />
         <Route
-          path="/forgotpass/change"
+          path='/forgotpass/change'
           element={
             <Suspense fallback={'loading...'}>
               <ForgotpassChangeLazy />
