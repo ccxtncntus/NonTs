@@ -1,5 +1,6 @@
-import { ReactNode, createContext } from "react";
-import { theme } from "./Theme";
+/* eslint-disable react-refresh/only-export-components */
+import { ReactNode, createContext } from 'react';
+import { theme } from './Theme';
 
 type themType = {
   children: ReactNode;

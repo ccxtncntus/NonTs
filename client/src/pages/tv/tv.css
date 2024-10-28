@@ -1,42 +1,21 @@
 .tv {
-  height: 100vh;
-  background-image: url("../../assets/bgTv.png");
-  background-attachment: fixed;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-  overflow: hidden;
-  color: white;
-  position: relative;
+    background-image: url('../../assets/bgTv.png');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    overflow: hidden;
+    color: white;
+    position: relative;
 }
-.tv_bg {
-  background-color: rgba(17, 17, 17, 0.7);
-  height: 100%;
-  padding: 40px 80px;
+
+.tv_h {
+    min-height: 88vh;
 }
-.tv_add {
-  position: absolute;
-  top: 40px;
-  left: 20px;
-  color: white !important;
-  border: 1px solid white !important;
+
+.tv_h2 {
+    min-height: 68vh;
 }
-.tv_home {
-  color: white !important;
-  position: absolute;
-  top: 40px;
-  right: 20px;
-  border: 1px solid white !important;
-}
-.tvbtn {
-  color: white !important;
-  border: 1px solid white !important;
-}
-.tv_home:hover,
-.tv_add:hover,
-.tvbtn:hover {
-  background-color: white !important;
-  color: var(--text) !important;
-  transition: all 0.3s;
-  box-shadow: 0 0 10px white;
+
+.fs-8 {
+    font-size: 0.8rem !important;
 }

@@ -1,0 +1,51 @@
+.login {
+  position: relative;
+  height: 100vh;
+  /* background: url('../../assets/bglogin.jpg'); */
+  background: url('../../assets/imgVideo/videochild.jpg');
+  background-size: cover;
+  background-position: center;
+}
+.login_form {
+  max-width: 500px;
+  padding: 20px 20px;
+  background-color: rgba(255, 255, 255, 0.3);
+  border-radius: 12px;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+.login_form_title_logo {
+  /* font-size: 1.6rem; */
+  font-weight: 500;
+}
+
+.login_mark {
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.4);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+.login_btn {
+  padding: 10px 60px;
+  border-radius: 50px;
+  background-color: var(--vip);
+  border: none;
+  color: white;
+  border: 0.5px solid var(--vip);
+  box-shadow: 0 0 10px var(--vip);
+}
+.login_btn:hover {
+  background-color: white;
+  color: var(--vip);
+  transition: all 0.3s;
+  border: 0.5px solid var(--vip);
+  box-shadow: 0 0 10px var(--vip);
+}
+.login_mark_col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
